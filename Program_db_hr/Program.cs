@@ -9,6 +9,7 @@ namespace Program_db_hr
         {
             //Check the method of the system
             //Please uncomment some of these
+            //Pull this from GitHub Online Website
 
 
             // //GetAllRegions();
