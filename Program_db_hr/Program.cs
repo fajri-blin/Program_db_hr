@@ -15,6 +15,8 @@ namespace Program_db_hr
             //This is the backup branch
             //This backup branch will be merge to main later
 
+            //This is the features branch
+
             // //GetAllRegions();
             // Console.WriteLine("Get All Regions");
             // Region.GetAllRegions();
