@@ -7,6 +7,10 @@ namespace Program_db_hr
 
         public static void Main(string[] args)
         {
+            //Check the method of the system
+            //Please uncomment some of these
+
+
             // //GetAllRegions();
             // Console.WriteLine("Get All Regions");
             // Region.GetAllRegions();
