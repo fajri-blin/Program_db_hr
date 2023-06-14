@@ -11,10 +11,6 @@ namespace Program_db_hr
             //Please uncomment some of these
             //Pull this from GitHub Online Website
 
-
-            //This is the backup branch
-            //This backup branch will be merge to main later
-
             // //GetAllRegions();
             // Console.WriteLine("Get All Regions");
             // Region.GetAllRegions();
