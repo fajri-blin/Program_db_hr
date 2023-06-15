@@ -5,29 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 
-namespace Program_db_hr
+namespace Program_db_hr.TableDB
 {
     public class Country
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public int IdRegions  {get; set; }
+        public int IdRegions { get; set; }
 
         public Country() { }
 
         public Country(string id, string name, int idRegions)
         {
-            if(id.Length > 3)
+            if (id.Length > 3)
             {
                 throw new ArgumentException("The Length of ID must not exceed 2 characters");
             }
             Id = id;
 
             Name = name;
-            IdRegions = idRegions; 
+            IdRegions = idRegions;
         }
 
-        public static void GetAllCountries()
+        public List<Country> GetAllCountries()
         {
             var countries = new List<Country>();
             SqlConnection connection = ConnectionDB.GetConnection();
@@ -43,7 +43,7 @@ namespace Program_db_hr
                 if (reader.HasRows)
                 {
                     while (reader.Read())
-                    {    
+                    {
                         var country = new Country();
                         country.Id = reader.GetString(0);
                         country.Name = reader.GetString(1);
@@ -51,29 +51,31 @@ namespace Program_db_hr
                         countries.Add(country);
                     }
                 }
-                else 
+                else
                 {
                     Console.WriteLine("No rows found.");
                 }
                 reader.Close();
 
                 // Display All Countries
-                foreach (Country country in countries)
-                {
-                    Console.WriteLine($"Country ID: {country.Id} | Country Name: {country.Name} | Region ID: {country.IdRegions}");
-                }
+                /*                foreach (Country country in countries)
+                                {
+                                    Console.WriteLine($"Country ID: {country.Id} | Country Name: {country.Name} | Region ID: {country.IdRegions}");
+                                }*/
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine("Error in GetAllCountries()");
             }
             connection.Close();
+            return countries;
         }
 
-        public static void GetCountryById(string id)
+        public Country GetCountryById(string id)
         {
+            Country country = null;
             SqlConnection connection = ConnectionDB.GetConnection();
             connection.Open();
             try
@@ -89,32 +91,34 @@ namespace Program_db_hr
                 {
                     while (reader.Read())
                     {
-                        var country = new Country();
+                        country = new Country();
                         country.Id = reader.GetString(0);
                         country.Name = reader.GetString(1);
                         country.IdRegions = reader.GetInt32(2);
-                        Console.WriteLine($"Country ID: {country.Id} | Country Name: {country.Name} | Region ID: {country.IdRegions}");
+                        /*                        Console.WriteLine($"Country ID: {country.Id} | Country Name: {country.Name} | Region ID: {country.IdRegions}");*/
                     }
                 }
-                else 
+                else
                 {
                     Console.WriteLine("No rows found.");
                 }
                 reader.Close();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine("Error in GetCountryById()");
             }
+            return country;
         }
 
-        public static void CreateCountry(string id, string name, int regionId)
+        public void CreateCountry(string id, string name, int regionId)
         {
             int result = 0;
             SqlConnection connection = ConnectionDB.GetConnection();
             connection.Open();
-            
+
             SqlTransaction transaction = connection.BeginTransaction();
             try
             {
@@ -128,7 +132,7 @@ namespace Program_db_hr
                 command.Parameters.AddWithValue("@regionId", regionId);
 
                 result = command.ExecuteNonQuery();
-                if(result>0)
+                if (result > 0)
                 {
                     transaction.Commit();
                     Console.WriteLine("Insert Success");
@@ -138,21 +142,22 @@ namespace Program_db_hr
                     Console.WriteLine("Insert Failed");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 try
                 {
                     transaction.Rollback();
-                }catch(Exception exRollback)
+                }
+                catch (Exception exRollback)
                 {
                     Console.WriteLine(exRollback.Message);
                 }
             }
-            connection.Close();        
+            connection.Close();
         }
 
-        public static void UpdateCountry(string id, string name, int regionId)
+        public void UpdateCountry(string id, string name, int regionId)
         {
             int result = 0;
             SqlConnection connection = ConnectionDB.GetConnection();
@@ -171,7 +176,7 @@ namespace Program_db_hr
                 cmd.Parameters.AddWithValue("@regionId", regionId);
 
                 result = cmd.ExecuteNonQuery();
-                if(result>0)
+                if (result > 0)
                 {
                     transaction.Commit();
                     Console.WriteLine("Update Success");
@@ -180,20 +185,22 @@ namespace Program_db_hr
                 {
                     Console.WriteLine("Update Failed");
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 try
                 {
                     transaction.Rollback();
-                }catch(Exception exRollback)
+                }
+                catch (Exception exRollback)
                 {
                     Console.WriteLine(exRollback.Message);
                 }
             }
         }
 
-        public static void DeleteCountry(string id) 
+        public void DeleteCountry(string id)
         {
             int result = 0;
             SqlConnection connection = ConnectionDB.GetConnection();
@@ -210,7 +217,7 @@ namespace Program_db_hr
                 cmd.Parameters.AddWithValue("@id", id);
 
                 result = cmd.ExecuteNonQuery();
-                if(result>0)
+                if (result > 0)
                 {
                     transaction.Commit();
                     Console.WriteLine("Delete Success");
@@ -219,13 +226,15 @@ namespace Program_db_hr
                 {
                     Console.WriteLine("Delete Failed");
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 try
                 {
                     transaction.Rollback();
-                }catch(Exception exRollback)
+                }
+                catch (Exception exRollback)
                 {
                     Console.WriteLine(exRollback.Message);
                 }

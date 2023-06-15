@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Program_db_hr
+namespace Program_db_hr.TableDB
 {
     public class ConnectionDB
     {

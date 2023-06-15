@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-namespace Program_db_hr
+namespace Program_db_hr.TableDB
 {
     public class Employee
     {
@@ -20,7 +20,7 @@ namespace Program_db_hr
 
         public Employee() { }
 
-        public static void GetAllEmployees()
+        public List<Employee> GetAllEmployees()
         {
             var employees = new List<Employee>();
             SqlConnection connection = ConnectionDB.GetConnection();
@@ -61,21 +61,21 @@ namespace Program_db_hr
                 reader.Close();
 
                 // Display All Employees
-                foreach (Employee employee in employees)
-                {
-                    Console.Write($"EmployeeId: {employee.Id} ");
-                    Console.Write($"FirstName: {employee.FirstName} ");
-                    Console.Write($"LastName: {employee.LastName} ");
-                    Console.Write($"Email: {employee.Email} ");
-                    Console.Write($"PhoneNumber: {employee.PhoneNumber} ");
-                    Console.Write($"HireDate: {employee.HireDate} ");
-                    Console.Write($"Salary: {employee.Salary} ");
-                    Console.Write($"CommissionPCT: {employee.CommissionPCT} ");
-                    Console.Write($"ManagerId: {employee.ManagerId} ");
-                    Console.Write($"JobId: {employee.JobId} ");
-                    Console.Write($"DepartmentId: {employee.DepartmentId} ");
-                    Console.WriteLine();
-                }
+                /*                foreach (Employee employee in employees)
+                                {
+                                    Console.Write($"EmployeeId: {employee.Id} ");
+                                    Console.Write($"FirstName: {employee.FirstName} ");
+                                    Console.Write($"LastName: {employee.LastName} ");
+                                    Console.Write($"Email: {employee.Email} ");
+                                    Console.Write($"PhoneNumber: {employee.PhoneNumber} ");
+                                    Console.Write($"HireDate: {employee.HireDate} ");
+                                    Console.Write($"Salary: {employee.Salary} ");
+                                    Console.Write($"CommissionPCT: {employee.CommissionPCT} ");
+                                    Console.Write($"ManagerId: {employee.ManagerId} ");
+                                    Console.Write($"JobId: {employee.JobId} ");
+                                    Console.Write($"DepartmentId: {employee.DepartmentId} ");
+                                    Console.WriteLine();
+                                }*/
 
             }
             catch (Exception ex)
@@ -84,6 +84,7 @@ namespace Program_db_hr
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
             }
+            return employees;
         }
     }
 }

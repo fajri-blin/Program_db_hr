@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 
-namespace Program_db_hr
+namespace Program_db_hr.TableDB
 {
     public class Location
     {
@@ -15,8 +15,8 @@ namespace Program_db_hr
         public string City { get; set; }
         public string StateProvince { get; set; }
         public string CountryId { get; set; }
-    
-        public Location(){}
+
+        public Location() { }
 
         public Location(int id, string streetAdress, string postalCode, string city, string stateProvince, string countryId)
         {
@@ -28,9 +28,9 @@ namespace Program_db_hr
             CountryId = countryId;
         }
 
-        public static void GetAllLocations()
+        public List<Location> GetAllLocations()
         {
-            var Base = new List<Location>();
+            var locations = new List<Location>();
             SqlConnection connection = ConnectionDB.GetConnection();
             connection.Open();
             try
@@ -53,7 +53,7 @@ namespace Program_db_hr
                         data.PostalCode = reader.GetString(2);
                         data.City = reader.GetString(3);
                         data.StateProvince = reader.GetString(4);
-                        Base.Add(data);
+                        locations.Add(data);
                     }
                 }
                 else
@@ -63,11 +63,11 @@ namespace Program_db_hr
                 reader.Close();
 
                 // Display All Regions
-                foreach (Location location in Base)
-                {
-                    Console.WriteLine(location.Id + " " + location.StreetAdress + " " + location.PostalCode + " " + location.City + " " + location.StateProvince + " " + location.CountryId);
-                }
-            
+                /*                foreach (Location location in Base)
+                                {
+                                    Console.WriteLine(location.Id + " " + location.StreetAdress + " " + location.PostalCode + " " + location.City + " " + location.StateProvince + " " + location.CountryId);
+                                }*/
+
             }
             catch (Exception ex)
             {
@@ -76,6 +76,7 @@ namespace Program_db_hr
                 Console.WriteLine("Connection Failed");
             }
             connection.Close();
+            return locations;
         }
 
     }

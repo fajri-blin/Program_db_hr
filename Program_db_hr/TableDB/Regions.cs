@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Program_db_hr
+namespace Program_db_hr.TableDB
 {
     public class Region
     {
@@ -15,8 +15,9 @@ namespace Program_db_hr
             Id = id;
             Name = name_region;
         }
+        public Region() { }
 
-        public static void GetAllRegions()
+        public List<Region> GetAllRegions()
         {
             var regions = new List<Region>();
             SqlConnection connection = ConnectionDB.GetConnection();
@@ -48,11 +49,11 @@ namespace Program_db_hr
                 reader.Close();
 
                 // Display All Regions
-                foreach (Region region in regions)
-                {
-                    Console.WriteLine($"Id: {region.Id} - Name: {region.Name}");
-                }
-            
+                /*                foreach (Region region in regions)
+                                {
+                                    Console.WriteLine($"Id: {region.Id} - Name: {region.Name}");
+                                }*/
+
             }
             catch (Exception ex)
             {
@@ -61,11 +62,12 @@ namespace Program_db_hr
                 Console.WriteLine("Connection Failed");
             }
             connection.Close();
+            return regions;
         }
 
-        public static void GetRegionById(int id)
+        public Region GetRegionById(int id)
         {
-            var regions = new List<Region>();
+            Region region = null;
             SqlConnection conn = ConnectionDB.GetConnection();
             conn.Open();
             try
@@ -82,11 +84,10 @@ namespace Program_db_hr
                 {
                     while (reader.Read())
                     {
-                        var region = new Region(
+                        region = new Region(
                             reader.GetInt32(0),
                             reader.GetString(1)
                         );
-                        regions.Add(region);
                     }
                 }
                 else
@@ -95,22 +96,18 @@ namespace Program_db_hr
                 }
                 reader.Close();
 
-                // Display All Regions
-                foreach (Region region in regions)
-                {
-                    Console.WriteLine($"Id: {region.Id} - Name: {region.Name}");
-                
-                }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine("Connection Failed");
             }
             conn.Close();
+            return region;
         }
 
-        public static void CreateRegion(string name)
+        public void CreateRegion(string name)
         {
             int result = 0;
             SqlConnection conn = ConnectionDB.GetConnection();
@@ -133,23 +130,25 @@ namespace Program_db_hr
 
                 // Execute Command
                 result = cmd.ExecuteNonQuery();
-                if(result > 0)
+                if (result > 0)
                 {
                     Console.WriteLine($"Region by name = {name}, has been created");
                 }
-                else{
+                else
+                {
                     Console.WriteLine("Create Failed");
                 }
 
                 transaction.Commit();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 try
                 {
                     transaction.Rollback();
-                }catch(Exception rollback)
+                }
+                catch (Exception rollback)
                 {
                     Console.WriteLine(rollback.Message);
                 }
@@ -157,8 +156,8 @@ namespace Program_db_hr
             conn.Close();
         }
 
-        public static void UpdateRegion(int id, string name)
-        {    
+        public void UpdateRegion(int id, string name)
+        {
             int result = 0;
             SqlConnection conn = ConnectionDB.GetConnection();
             conn.Open();
@@ -182,30 +181,33 @@ namespace Program_db_hr
 
                 // Execute Command
                 result = cmd.ExecuteNonQuery();
-                if(result > 0)
+                if (result > 0)
                 {
                     Console.WriteLine($"Region by ID={id} has been updated");
                 }
-                else{
+                else
+                {
                     Console.WriteLine("Update Failed");
                 }
 
                 // Commit Transaction
                 transaction.Commit();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 try
                 {
                     transaction.Rollback();
-                }catch(Exception rollback)
+                }
+                catch (Exception rollback)
                 {
                     Console.WriteLine(rollback.Message);
                 }
             }
         }
-        
-        public static void DeleteRegion(int id)
+
+        public void DeleteRegion(int id)
         {
             SqlConnection conn = ConnectionDB.GetConnection();
             conn.Open();
@@ -227,7 +229,7 @@ namespace Program_db_hr
 
                 // Execute Command
                 int rowAffected = cmd.ExecuteNonQuery();
-                if(rowAffected > 0)
+                if (rowAffected > 0)
                 {
                     Console.WriteLine($"Region by ID={id} has been deleted");
                 }
@@ -238,18 +240,22 @@ namespace Program_db_hr
 
                 // Commit Transaction
                 transaction.Commit();
-            
-            }catch(Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 try
                 {
                     transaction.Rollback();
-                }catch(Exception rollback)
+                }
+                catch (Exception rollback)
                 {
                     Console.WriteLine(rollback.Message);
                 }
             }
         }
+
+
     }
 }

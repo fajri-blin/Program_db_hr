@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 
-namespace Program_db_hr
+namespace Program_db_hr.TableDB
 {
     public class Job
     {
@@ -14,9 +14,9 @@ namespace Program_db_hr
         public int MinSalary { get; set; }
         public int MaxSalary { get; set; }
 
-        public Job(){}
+        public Job() { }
 
-        public static void GetAllJobs()
+        public List<Job> GetAllJobs()
         {
             var jobs = new List<Job>();
             SqlConnection connection = ConnectionDB.GetConnection();
@@ -41,22 +41,25 @@ namespace Program_db_hr
                         job.MaxSalary = reader.GetInt32(3);
                         jobs.Add(job);
                     }
-                }else
+                }
+                else
                 {
                     Console.WriteLine("No rows found.");
                 }
                 reader.Close();
                 // Display All Jobs
-                foreach (var job in jobs)
-                {
-                    Console.WriteLine(job.Id + " " + job.Title + " " + job.MinSalary + " " + job.MaxSalary);
-                }
-            }catch(Exception ex)
+                /*                foreach (var job in jobs)
+                                {
+                                    Console.WriteLine(job.Id + " " + job.Title + " " + job.MinSalary + " " + job.MaxSalary);
+                                }*/
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Error");
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
             }
+            return jobs;
         }
 
 
