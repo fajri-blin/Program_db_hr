@@ -49,10 +49,10 @@ namespace Program_db_hr.TableDB
                         var data = new Location();
                         data.Id = reader.GetInt32(0);
                         data.StreetAdress = reader.GetString(1);
-                        data.StreetAdress = reader.GetString(1);
                         data.PostalCode = reader.GetString(2);
                         data.City = reader.GetString(3);
                         data.StateProvince = reader.GetString(4);
+                        data.CountryId = reader.GetString(5);
                         locations.Add(data);
                     }
                 }

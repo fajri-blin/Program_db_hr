@@ -11,7 +11,7 @@ namespace Program_db_hr.TableDB
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public int IdRegions { get; set; }
+        public int RegionId { get; set; }
 
         public Country() { }
 
@@ -24,7 +24,7 @@ namespace Program_db_hr.TableDB
             Id = id;
 
             Name = name;
-            IdRegions = idRegions;
+            RegionId = idRegions;
         }
 
         public List<Country> GetAllCountries()
@@ -47,7 +47,7 @@ namespace Program_db_hr.TableDB
                         var country = new Country();
                         country.Id = reader.GetString(0);
                         country.Name = reader.GetString(1);
-                        country.IdRegions = reader.GetInt32(2);
+                        country.RegionId = reader.GetInt32(2);
                         countries.Add(country);
                     }
                 }
@@ -94,7 +94,7 @@ namespace Program_db_hr.TableDB
                         country = new Country();
                         country.Id = reader.GetString(0);
                         country.Name = reader.GetString(1);
-                        country.IdRegions = reader.GetInt32(2);
+                        country.RegionId = reader.GetInt32(2);
                         /*                        Console.WriteLine($"Country ID: {country.Id} | Country Name: {country.Name} | Region ID: {country.IdRegions}");*/
                     }
                 }
