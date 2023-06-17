@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using Program_db_hr.Connections;
 
-namespace Program_db_hr
+namespace Program_db_hr.Models
 {
     public class Job
     {
@@ -14,12 +15,12 @@ namespace Program_db_hr
         public int MinSalary { get; set; }
         public int MaxSalary { get; set; }
 
-        public Job(){}
+        public Job() { }
 
-        public static void GetAllJobs()
+        public List<Job> GetAll()
         {
             var jobs = new List<Job>();
-            SqlConnection connection = ConnectionDB.GetConnection();
+            SqlConnection connection = ConnectionDB.Get();
             connection.Open();
 
             try
@@ -41,22 +42,20 @@ namespace Program_db_hr
                         job.MaxSalary = reader.GetInt32(3);
                         jobs.Add(job);
                     }
-                }else
+                }
+                else
                 {
-                    Console.WriteLine("No rows found.");
+                    jobs = null;
                 }
                 reader.Close();
-                // Display All Jobs
-                foreach (var job in jobs)
-                {
-                    Console.WriteLine(job.Id + " " + job.Title + " " + job.MinSalary + " " + job.MaxSalary);
-                }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Error");
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
             }
+            return jobs;
         }
 
 

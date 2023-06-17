@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Program_db_hr.Connections;
 
-namespace Program_db_hr
+namespace Program_db_hr.Models
 {
     public class Employee
     {
@@ -20,12 +21,11 @@ namespace Program_db_hr
 
         public Employee() { }
 
-        public static void GetAllEmployees()
+        public List<Employee> GetAll()
         {
             var employees = new List<Employee>();
-            SqlConnection connection = ConnectionDB.GetConnection();
+            SqlConnection connection = ConnectionDB.Get();
             connection.Open();
-
             try
             {
                 // Create an instance of SqlCommand
@@ -56,27 +56,9 @@ namespace Program_db_hr
                 }
                 else
                 {
-                    Console.WriteLine("No rows found.");
+                    employees = null;
                 }
                 reader.Close();
-
-                // Display All Employees
-                foreach (Employee employee in employees)
-                {
-                    Console.Write($"EmployeeId: {employee.Id} ");
-                    Console.Write($"FirstName: {employee.FirstName} ");
-                    Console.Write($"LastName: {employee.LastName} ");
-                    Console.Write($"Email: {employee.Email} ");
-                    Console.Write($"PhoneNumber: {employee.PhoneNumber} ");
-                    Console.Write($"HireDate: {employee.HireDate} ");
-                    Console.Write($"Salary: {employee.Salary} ");
-                    Console.Write($"CommissionPCT: {employee.CommissionPCT} ");
-                    Console.Write($"ManagerId: {employee.ManagerId} ");
-                    Console.Write($"JobId: {employee.JobId} ");
-                    Console.Write($"DepartmentId: {employee.DepartmentId} ");
-                    Console.WriteLine();
-                }
-
             }
             catch (Exception ex)
             {
@@ -84,6 +66,7 @@ namespace Program_db_hr
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
             }
+            return employees;
         }
     }
 }

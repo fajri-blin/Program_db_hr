@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Program_db_hr.Connections;
 
-namespace Program_db_hr
+namespace Program_db_hr.Models
 {
     public class History
     {
@@ -14,10 +15,10 @@ namespace Program_db_hr
 
         public History() { }
 
-        public static void GetAllHistories()
+        public List<History> GetAll()
         {
             var histories = new List<History>();
-            SqlConnection connect = ConnectionDB.GetConnection();
+            SqlConnection connect = ConnectionDB.Get();
             connect.Open();
 
             try
@@ -35,7 +36,7 @@ namespace Program_db_hr
                         var history = new History();
                         history.StartDate = Convert.ToDateTime(reader["start_date"]);
                         history.EmployeeId = Convert.ToInt32(reader["employee_id"]);
-                        history.EndDate = reader.IsDBNull(reader.GetOrdinal("end_date")) ? (int?)null : Convert.ToInt32(reader["end_date"]);
+                        history.EndDate = reader.IsDBNull(reader.GetOrdinal("end_date")) ? null : Convert.ToInt32(reader["end_date"]);
                         history.DepartmentId = Convert.ToInt32(reader["department_id"]);
                         history.JobId = reader["job_id"].ToString();
                         histories.Add(history);
@@ -43,16 +44,9 @@ namespace Program_db_hr
                 }
                 else
                 {
-                    Console.WriteLine("No rows found.");
+                    histories = null;
                 }
                 reader.Close();
-
-                //Display All Histories
-                foreach(History history in histories)
-                {
-                    Console.WriteLine(history.StartDate + " " + history.EmployeeId + " " + history.EndDate + " " + history.DepartmentId + " " + history.JobId);
-                }
-                
             }
             catch (Exception ex)
             {
@@ -61,6 +55,7 @@ namespace Program_db_hr
                 Console.WriteLine(ex.StackTrace);
             }
             connect.Close();
+            return histories;
         }
     }
 }
