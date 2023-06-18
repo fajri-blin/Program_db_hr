@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Program_db_hr.Connections;
+using Program_db_hr.Views;
 
 namespace Program_db_hr.Models
 {
@@ -65,9 +66,7 @@ namespace Program_db_hr.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
-                Console.WriteLine("Connection Failed");
+                ErrorViews.ErrorHandlings(ex);
             }
             connection.Close();
             return locations;

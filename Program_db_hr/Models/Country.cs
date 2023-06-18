@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Program_db_hr.Connections;
+using Program_db_hr.Views;
 
 namespace Program_db_hr.Models;
 
@@ -60,9 +61,7 @@ public class Country
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
-            Console.WriteLine(ex.StackTrace);
-            Console.WriteLine("Error in GetAllCountries()");
+            ErrorViews.ErrorHandlings(ex);
         }
         connection.Close();
         return countries;
@@ -97,9 +96,7 @@ public class Country
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
-            Console.WriteLine(ex.StackTrace);
-            Console.WriteLine("Error in GetCountryById()");
+            ErrorViews.ErrorHandlings(ex);
         }
         return country;
     }
@@ -130,14 +127,13 @@ public class Country
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             try
             {
                 transaction.Rollback();
             }
             catch (Exception exRollback)
             {
-                Console.WriteLine(exRollback.Message);
+                ErrorViews.ErrorHandlings(exRollback);
             }
         }
         connection.Close();
@@ -175,14 +171,14 @@ public class Country
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            ErrorViews.ErrorHandlings(ex);
             try
             {
                 transaction.Rollback();
             }
             catch (Exception exRollback)
             {
-                Console.WriteLine(exRollback.Message);
+                ErrorViews.ErrorHandlings(exRollback);
             }
         }
         return result;
@@ -216,14 +212,14 @@ public class Country
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            ErrorViews.ErrorHandlings(ex);
             try
             {
                 transaction.Rollback();
             }
             catch (Exception exRollback)
             {
-                Console.WriteLine(exRollback.Message);
+                ErrorViews.ErrorHandlings(exRollback);
             }
         }
         return result;

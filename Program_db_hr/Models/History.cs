@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using Program_db_hr.Connections;
+using Program_db_hr.Views;
 
 namespace Program_db_hr.Models
 {
@@ -50,9 +51,7 @@ namespace Program_db_hr.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ERROR");
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
+                ErrorViews.ErrorHandlings(ex);
             }
             connect.Close();
             return histories;

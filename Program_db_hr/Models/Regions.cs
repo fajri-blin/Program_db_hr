@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Program_db_hr.Connections;
+using Program_db_hr.Views;
 
 namespace Program_db_hr.Models
 {
@@ -52,9 +53,7 @@ namespace Program_db_hr.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
-                Console.WriteLine("Connection Failed");
+                ErrorViews.ErrorHandlings(ex);
             }
             connection.Close();
             return regions;
@@ -90,9 +89,7 @@ namespace Program_db_hr.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
-                Console.WriteLine("Connection Failed");
+                ErrorViews.ErrorHandlings(ex);
             }
             conn.Close();
             return region;
@@ -132,14 +129,14 @@ namespace Program_db_hr.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                ErrorViews.ErrorHandlings(ex);
                 try
                 {
                     transaction.Rollback();
                 }
                 catch (Exception rollback)
                 {
-                    Console.WriteLine(rollback.Message);
+                    ErrorViews.ErrorHandlings(rollback);
                 }
             }
             conn.Close();
@@ -182,14 +179,14 @@ namespace Program_db_hr.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                ErrorViews.ErrorHandlings(ex);
                 try
                 {
                     transaction.Rollback();
                 }
                 catch (Exception rollback)
                 {
-                    Console.WriteLine(rollback.Message);
+                    ErrorViews.ErrorHandlings(rollback);
                 }
             }
             return result;
@@ -229,14 +226,14 @@ namespace Program_db_hr.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                ErrorViews.ErrorHandlings(ex);
                 try
                 {
                     transaction.Rollback();
                 }
                 catch (Exception rollback)
                 {
-                    Console.WriteLine(rollback.Message);
+                    ErrorViews.ErrorHandlings(rollback);
                 }
             }
             return result;
